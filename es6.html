@@ -1,0 +1,360 @@
+<html>
+<head>
+  <style>
+  .verdao{
+    color: green;
+    font-size: 18px;
+  }
+</style>
+</head>
+<body>
+
+
+  <script type="text/javascript">
+    let args = {
+      titulo: 'Este é um teste das novas funções do ES6.',
+      corpo: 'Corpo sit dolum quod erad demonstrandum',
+      rodape: 'Kaminari',
+      autor: 'Adriano'
+    };
+
+    let marcacao = `
+    <article>
+    <header>
+    <h1> ${args.titulo} </h1>
+    </header>
+    <section>
+    <h1> ${args.corpo} </h1>
+    </section>
+    <footer>
+    <p> ${args.rodape} </p>
+    <p> Autor: ${ Final(args.autor) }</p>
+    </footer>
+    </article>
+    `;
+
+    const galick = 'Galick Ho';
+    const kaio = 'Kaio ken';
+    const eraser = 'Eraser Cannon';
+    const poderes = taggedHtml`Primeiro ${galick} || Segundo ${kaio} || Terceiro ${eraser}`;
+    const arr = ['Kuririn', 'Chaosu', 'Yamcha', 'Pual', 'Kame'];
+    const arr2 = ['Nappa', 'Ginyu', 'Zarbon', 'Janemba'];
+
+    let leandro = 'Escola sem partido';
+    let ademar = 'Radema, the tinkerer';
+    let humpry = 'Humpry, o profeta do Caos';
+    let ade = 'Adeílson Silveira';
+
+    const equipe = { leandro, ademar, humpry, ade, coord() { return 'CEDES170' } };
+    const equipeHtml = taggedHtml `<p>${equipe.leandro} | ${equipe.ademar} | ${equipe.humpry} | ${equipe.ade} --> ${equipe.coord()} </p>`;
+
+        // Spread operator
+        console.log(...arr);
+        // União de arrays com valor entre eles
+        console.log([...arr, 'King Cold', ...arr2]);
+        // Imprime conteúdo da união de arrays como string
+        console.log(...[...arr, 'King Cold', ...arr2]);
+        // Rest params
+        console.log(`Multiplicador com rest params: ${multiplicador(2, 7, 9, 13, 25)}`)
+
+        const aleatorio = {
+          "nome": 'Pedir',
+          "sobrenome": 'Mais cedo',
+          "profissao": 'Dizimista'
+        };
+
+        const { nome, sobrenome: sobre, cidade = 'Malebolgia' } = aleatorio;
+
+        let num1 = 50;
+        let num2 = 51;
+        // troca de variáveis
+        [num1, num2] = [num2, num1];
+
+        // API de chamada ajax. Como aceita tudo como resposta, os dados
+        // precisam ser convertidos antes de serem usados
+        // const search = fetch('https://willianjusten.com.br/search.json');
+        // search.then(data => data.json()).then(data =>
+        //   data.map(post => {
+        //     console.log(post.title);
+        //   }));
+
+        function Final(nome) {
+          return (nome) ? nome : 'Não tem nada';
+        }
+
+        function taggedHtml(template, ...valores) {
+          return template.reduce((acumulador, parte, i) => {
+            return `
+            ${acumulador}
+            <span class="verdao"> ${valores[i - 1].toUpperCase()} </span>
+            ${parte}
+            `;
+          });
+        }
+
+        function nomeador(nome = 'Elxa Dal', funcao = 'Mestre nomeador'){
+          return `<p>Nome: ${nome} -- Função: ${funcao}</p>`;
+        }
+
+        function multiplicador(mult, ...valores) {
+          return valores.map(val => mult * val);
+        }
+
+        function funcoesDasPromessas() {
+          let prom1 = new Promise(function (resolve, reject) {
+            setTimeout(function(args) {
+              resolve(['Moeda', 'Unidade']);
+            }, 1500)
+          });
+
+          let prom2 = new Promise(function (resolve, reject) {
+            setTimeout(function(args) {
+              resolve(['Pais', 'Brasil']);
+            }, 1200);
+          });
+
+          let prom3 = new Promise(function (resolve, reject) {
+            setTimeout(function(args) {
+              reject('É, essa promessa não tá rolando não');
+            }, 1100);
+          });
+
+          // Só executa quando cumpre todas as promessas
+          // Como existe uma com erro, não resolve nenhuma
+          Promise.all([prom1, prom2, prom3])
+          .then((data) => {
+            data.map(arg => document.body.innerHTML += arg);
+          });
+
+          // Executa a promessa de menor tempo de resposta
+          // e descarta as outras
+          Promise.race([prom1, prom2])
+          .then((data) => {
+            data.map(arg => document.body.innerHTML += arg);
+          });
+
+        };
+
+        class Eleitor{
+          constructor(_nome, _candidato, _partido) {
+            this.nome = _nome;
+            this.candidato = _candidato;
+            this.partido = _partido;
+          }
+
+          voto(){
+            console.log(`${this.nome}: Meu voto é ${this.candidato} - ${this.partido}`);
+          }
+
+          static contagem(){
+            console.log('Contagem de eleitores');
+          }
+
+          get mito(){
+            console.log(`Mito`);
+          }
+
+          set inteligencia(_qi){
+            this.qi = _qi;
+          }
+        }
+
+        class Bolsominion extends Eleitor{
+          constructor(_nome, _frases){
+            super(_nome, 'Bolsonaro', 'Mito');
+            this.frases = _frases;
+          }
+
+          chamarFrase(){
+            console.log(`Frase do mito: ${this.frases}`)
+          }
+        }
+
+        function herancaPrototipal() {
+          const leandro = new Eleitor('Leandro', 'Bolsonaro', 'PSL');
+          leandro.voto();
+          Eleitor.contagem();
+          leandro.inteligencia = 100;
+          console.log(leandro.qi);
+          leandro.mito;
+
+          const humpry = new Bolsominion('Humphrey', 'Arma pra todo mundo');
+          humpry.chamarFrase();
+          humpry.voto();
+        }
+
+        function simbolos(){
+          let rame = Symbol('rame');
+          let rrame = Symbol('rame');
+
+          console.log(`São símbolos iguais? ${rame === rrame}`);
+
+          let objeto = {
+            [Symbol('banda')]: 'System of a down',
+            [Symbol('album')]: 'Mesmerize',
+            'musica': 'Radio/Video'
+          }
+
+          let symbolProps = Object.getOwnPropertySymbols(objeto);
+
+          console.log(`Propriedades symbol: ${symbolProps.map(sym => objeto[sym])}`);
+        }
+
+        function aulaForOf(){
+          let arraia = ['Peixe', 'Cauda', 'Ferrão', 'Morte'];
+          let it = arraia[Symbol.iterator]();
+
+
+          for (maritimo of arraia) { console.log(maritimo) };
+        }
+
+      function aulaGenerators(){
+        function* generatorFunc(){
+          yield 'Primeiro impacto';
+          yield 'Segundo impacto';
+          yield 'Terceiro impacto';
+        };
+
+        const genFunc = generatorFunc();
+
+        console.log(genFunc);
+
+        for(gen of genFunc) { console.log(gen) };
+      }
+
+    function aulaProxy(){
+
+      let ob = {
+        'nome': 'Canelito',
+        'funcao': 'defender escola sem partido'
+      }
+
+      let proxy = new Proxy(ob, {
+        get(target, nome){
+          return `também conhecido como Canela de Siri. Mas nome original é ${target[nome]}`;
+        },
+        set (target, nome, value){
+          target[nome] = value + ' boladão';
+        }
+      });
+
+
+      console.log(`Proxy. Chamando nome do objeto base: ${ob.nome}`);
+      console.log(`Proxy. Chamando nome do proxy: ${proxy.nome}`);
+      proxy.nome = 'Siri';
+      console.log(`Proxy. Nome do proxy: ${proxy.nome}`);
+      ob.nome = 'Maluco';
+      console.log(`Proxy. Nome objeto base: ${proxy.nome}`);
+
+    }
+
+    function aulaSet(){
+      let novoSet = new Set(['Shadow of War', 'Last Night', 'Out of this world']);
+
+      novoSet.add('Bloodborne');
+      // nãa insere valores repetidos
+      novoSet.add('Bloodborne');
+      novoSet.add('Bloodborne');
+      // insere esses novos por haver diferença nas letras
+      novoSet.add('BloodbornE');
+      novoSet.add('BloodBorne');
+      novoSet.delete('BloodbornE');
+
+      // Set é baseado em iterador
+      // Values gera o iterador contindo na coleção
+      let it = novoSet.values();
+
+      console.log(novoSet);
+      console.log(`Tem Last night? ${novoSet.has('Last Night')}`);
+      console.log(it.next());
+
+      for(jogo of novoSet){
+        console.log(jogo);
+      }
+    }
+
+    function aulaWeakSet(){
+      let obj1 = {
+        cantor: 'Zé Ramalho',
+        idade: 54
+      }
+
+      let obj2 = {
+        cantor: 'Dj Edilson',
+        idade: 44
+      }
+
+      let wset = new WeakSet([obj1, obj2]);
+
+      console.log(wset);
+    }
+
+    function aulaMap(){
+      let map = new Map();
+
+      map.set('Khamul', 'The easterling');
+      map.set('Angmar', 'The Witch King');
+
+      let it = map.values();
+
+      for(val of map){
+        console.log(`Nazgûl: ${val}`);
+      }
+
+    }
+
+    async function aulaAsync(){
+      try{
+        const todos = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+        const jTodos = await todos.json();
+        console.log(jTodos);
+        document.body.innerHTML += `<p>Titulo api Fake: <i>${jTodos.title}</i></p>`;
+
+
+        const perfilGitHub = async function(usuarios){
+          const promessas = usuarios.map(usuario => fetch(`https://api.github.com/users/${usuario}`).then(resp => resp.json() ) );
+          const result = await Promise.all(promessas);
+          console.log(result);
+
+          result.map(usu => document.body.innerHTML += `<p>${usu.login} -> Github Bio: ${usu.bio}</p>`);
+
+        }
+
+        perfilGitHub(['AdrianoRRodrigues', 'DavidDarius']);
+
+
+      }
+      catch{
+        console.error(`unholy shit. This is an an error`);
+      }
+    }
+
+    function aulaPadStartEnd(){
+      console.log(`PadStart:  ${'benimaru'.padStart(10, 'Alo')}`);
+      console.log(`PadEnd:  ${'Rugal'.padEnd(10, 'Olla')}`);
+    }
+
+    document.body.innerHTML = marcacao;
+    document.body.innerHTML += poderes;
+    document.body.innerHTML += equipeHtml;
+    document.body.innerHTML += nomeador();
+    document.body.innerHTML += nomeador('Moiraine', 'Aes Sedai');
+    document.body.innerHTML += `<p>${nome} ${sobre} Mora em: ${cidade}</p>`;
+
+    funcoesDasPromessas();
+    herancaPrototipal();
+    simbolos();
+    aulaForOf();
+    aulaGenerators();
+    aulaProxy();
+    aulaSet();
+    aulaWeakSet();
+    aulaMap();
+    aulaAsync();
+    aulaPadStartEnd();
+
+  </script>
+
+</body>
+
+</html>

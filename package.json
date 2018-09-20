@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Repositório do curso de javascript com TDD da Udemy",
   "main": "index.js",
+  "engines": {
+    "node": "9.4.0"
+  },
   "scripts": {
     "lint": "node_modules\\.bin\\eslint src/*.js",
     "prepush": "npm run lint",
